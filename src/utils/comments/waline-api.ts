@@ -1,11 +1,4 @@
-import {
-  init,
-  pageviewCount,
-  commentCount,
-  RecentComments
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-expect-error
-} from 'https://unpkg.com/@waline/client@v2/dist/waline.mjs'
+import { init, pageviewCount, commentCount, RecentComments } from "@waline/client";
 import { cleanPath, filterHTMLContent, formatTime } from '..'
 import { Locales, PluginsData } from '@/models/ThemeConfig.class'
 
@@ -35,6 +28,12 @@ interface WalineComment {
   time: number
   url: string
   user_id: number | null
+}
+
+interface WalineRecentComments {
+  errno: number,
+  errmsg: string,
+  data: Array<WalineComment>
 }
 
 interface WalineInitOptions extends WalineConfig {
@@ -101,11 +100,11 @@ export class WalineComments {
 
   async getRecentComments(count: number) {
     const { serverURL } = this.configs
-    const { comments }: { comments: WalineComment[] } = await RecentComments({
+    const { comments }: { comments: WalineRecentComments } = await RecentComments({
       serverURL,
       count
     })
-    return comments.map((comment: WalineComment) => this.mapComment(comment))
+    return comments.data.map((comment: WalineComment) => this.mapComment(comment))
   }
 
   mapComment(comment: WalineComment): RecentComments {
