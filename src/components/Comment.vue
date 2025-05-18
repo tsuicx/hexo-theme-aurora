@@ -661,5 +661,23 @@ export default defineComponent({
       color: var(--text-accent);
     }
   }
+
+  .wl-addr {
+    @apply text-ob-dim bg-ob-deep-800;
+    color: var(--text-accent);
+    // 
+  }
+
+  .wl-browser {
+    @apply text-ob-dim bg-ob-deep-800;
+    color: var(--text-accent);
+    
+  }
+
+  .wl-os {
+    @apply text-ob-dim bg-ob-deep-800;
+    color: var(--text-accent);
+    
+  }
 }
 </style>

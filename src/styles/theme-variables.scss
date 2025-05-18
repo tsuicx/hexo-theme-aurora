@@ -1,11 +1,17 @@
 :root {
   --max-width: 1600px;
   --gap: 1.75rem;
+  // --main-gradient: linear-gradient(
+  //   130deg,
+  //   #24c6dc,
+  //   #5433ff 41.07%,
+  //   #ff0099 76.05%
+  // );
   --main-gradient: linear-gradient(
     130deg,
-    #24c6dc,
-    #5433ff 41.07%,
-    #ff0099 76.05%
+    #2980b9,
+    #6dd5fa 41.07%,
+    #ffc090 76.05%
   );
   --theme-transition: all 250ms ease;
 }
@@ -20,7 +26,7 @@
   --text-bright: #000000;
   --text-invert: #ffffff;
   --text-normal: #333333;
-  --text-accent: #e93796;
+  --text-accent: #ffc090;
   --text-sub-accent: #547ce7;
   --text-faint: #b2b2b2;
   --text-dim: #858585;
@@ -37,8 +43,8 @@
   --bg-accent-05: rgba(244, 86, 157, 0.05);
   --strong-gradient: linear-gradient(
     62deg,
-    #188bfd 0%,
-    #a03bff 100%
+    #87c2fd 0%,
+    #dcb9fc 100%
   ) !important;
   --gradient-cover: linear-gradient(
     90deg,
@@ -129,6 +135,16 @@
   --custom-quote-warning: #e98503;
   --custom-quote-danger: #dd2500;
   --custom-quote: #e93796;
+
+  .shiki,
+  .shiki span {
+    color: var(--shiki-light) !important;
+    background-color: var(--shiki-light-bg) !important;
+    /* 可选，用于定义字体样式 */
+    font-style: var(--shiki-light-font-style) !important;
+    font-weight: var(--shiki-light-font-weight) !important;
+    text-decoration: var(--shiki-light-text-decoration) !important;
+  }
 }
 
 .theme-dark {
@@ -249,6 +265,16 @@
   --custom-quote-warning: #cbcb00;
   --custom-quote-danger: #dd2500;
   --custom-quote: #5dc3d9;
+
+  .shiki,
+  .shiki span {
+    color: var(--shiki-dark) !important;
+    background-color: var(--shiki-dark-bg) !important;
+    /* 可选，用于定义字体样式 */
+    font-style: var(--shiki-dark-font-style) !important;
+    font-weight: var(--shiki-dark-font-weight) !important;
+    text-decoration: var(--shiki-dark-text-decoration) !important;
+  }
 }
 
 .ob-text-bright {
