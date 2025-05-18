@@ -36,7 +36,7 @@
           </b>
           <b
             v-if="post.categories && post.categories.length > 0"
-            @click="navigateToCategory(post.categories[0].slug)"
+            @click.stop="navigateToCategory(post.categories[0].slug)"
           >
             {{ post.categories[0].name }}
           </b>
@@ -52,7 +52,7 @@
               <li
                 v-for="index in numberOfTags"
                 :key="post.tags[index - 1].slug"
-                @click="navigateToTag(post.tags[index - 1].slug)"
+                @click.stop="navigateToTag(post.tags[index - 1].slug)"
               >
                 <em># </em><span>{{ post.tags[index - 1].name }}</span>
               </li>
