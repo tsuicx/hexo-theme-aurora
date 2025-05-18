@@ -1,5 +1,5 @@
 import { fetchAllTags } from '@/api'
-import { Tags } from '@/models/Post.class'
+import { Tags, Tag } from '@/models/Post.class'
 import { defineStore } from 'pinia'
 
 export const useTagStore = defineStore({
@@ -12,7 +12,7 @@ export const useTagStore = defineStore({
   }),
   getters: {},
   actions: {
-    async fetchAllTags() {
+    async fetchAllTags(): Promise<Tag[]> {
       const { data } = await fetchAllTags()
       return new Promise(resolve => {
         this.tags = new Tags(data).data

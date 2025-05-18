@@ -71,7 +71,7 @@ export const usePostStore = defineStore({
     async fetchPostsByCategory(
       category: string,
       page: number = 1,
-      pageSize: number = 12
+      pageSize: number = 6
     ): Promise<SpecificPostsList> {
       const { data } = await fetchPostsListByCategory(category, page, pageSize)
       return new Promise(resolve =>
@@ -83,7 +83,7 @@ export const usePostStore = defineStore({
     async fetchPostsByTag(
       slug: string,
       page: number = 1,
-      pageSize: number = 12
+      pageSize: number = 6
     ): Promise<SpecificPostsList> {
       const { data } = await fetchPostsListByTag(slug, page, pageSize)
       return new Promise(resolve => {

@@ -177,3 +177,32 @@ export function paginator<T>(data: T[], page: number, pageSize: number) {
   const endIndex = skip > data.length - 1 ? undefined : pageSize * page
   return data.slice(skip, endIndex)
 }
+
+/**
+ * 判断参数是否为空
+ *
+ * @param obj {*} 值
+ * @returns {boolean}
+ */
+export function isEmpty(obj: any): boolean {
+  if (typeof (obj) == undefined || obj == null) {
+    return true;
+  } else if (typeof (obj) == "string") {
+    return obj.trim().length == 0;
+  } else if (typeof (obj) == "object") {
+    if (Array.isArray(obj)) {
+      return obj.length == 0;
+    } else {
+      for (const key in obj) {
+        return false;
+      }
+      return true;
+    }
+  } else if (typeof (obj) == "number") {
+    return (obj + "").length == 0;
+  } else if (typeof (obj) == "boolean") {
+    return false;
+  } else {
+    return false;
+  }
+}

@@ -27,8 +27,8 @@
         </transition>
         <div class="flex flex-col relative">
           <ul class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
-            <template v-if="isLoading || posts.data.length === 0">
-              <li v-for="n in 12" :key="n">
+            <template v-if="isLoading">
+              <li v-for="n in 3" :key="n">
                 <ArticleCard :data="{}" />
               </li>
             </template>
@@ -39,21 +39,14 @@
             </template>
           </ul>
 
-          <Paginator
-            :pageSize="pagination.pageSize"
-            :pageTotal="pagination.pageTotal"
-            :page="pagination.page"
-            @pageChange="pageChangeHandler"
-          />
+          <Paginator :pageSize="pagination.pageSize" :pageTotal="pagination.pageTotal" :page="pagination.page"
+            @pageChange="pageChangeHandler" />
         </div>
       </div>
       <div>
         <Sidebar>
           <div class="sidebar-box flex flex-col gap-8">
-            <CategoryBox
-              :sidebar-box="false"
-              :active-category="categoryTitle"
-            />
+            <CategoryBox :sidebar-box="false" :active-category="categoryTitle" />
             <TagBox :sidebar-box="false" :active-tag="tagTitle" />
           </div>
         </Sidebar>
@@ -77,9 +70,11 @@ import Paginator from '@/components/Paginator.vue'
 import { ArticleCard } from '@/components/ArticleCard'
 import { SpecificPostsList } from '@/models/Post.class'
 import { useRoute } from 'vue-router'
+import { useTagStore } from '@/stores/tag'
 import { usePostStore } from '@/stores/post'
 import { useMetaStore } from '@/stores/meta'
 import SvgIcon from '@/components/SvgIcon/index.vue'
+import { isEmpty } from '@/utils'
 
 export default defineComponent({
   name: 'ArResult',
@@ -94,6 +89,7 @@ export default defineComponent({
   setup() {
     const { t } = useI18n()
     const route = useRoute()
+    const tagStore = useTagStore()
     const postStore = usePostStore()
     const metaStore = useMetaStore()
     const pageType = ref('search')
@@ -101,7 +97,7 @@ export default defineComponent({
     const isFetched = ref(false)
     const posts = ref(new SpecificPostsList())
     const pagination = ref({
-      pageSize: 12,
+      pageSize: 6,
       pageTotal: 0,
       page: 1
     })
@@ -109,64 +105,96 @@ export default defineComponent({
     const queryCategoryKey = 'aurora-query-category'
     const queryTag = ref()
     const queryCategory = ref()
+    const currentOption = ref('');
 
-    const initPage = () => {
-      if (queryTag.value) {
-        fetchPostByTag()
-      } else if (queryCategory.value) {
-        fetchPostByCategory()
-      }
+    const initPage = (page: number = 1) => {
 
-      window.scrollTo({
-        top: 0
-      })
-
-      metaStore.setTitle('search')
-    }
-
-    const fetchPostByTag = () => {
-      isFetched.value = false
-      postStore.fetchPostsByTag(queryTag.value).then(response => {
-        isFetched.value = true
-        posts.value = response
-        pagination.value.pageTotal = response.total
-      })
-    }
-
-    const fetchPostByCategory = () => {
-      isFetched.value = false
-      postStore.fetchPostsByCategory(queryCategory.value).then(response => {
-        isFetched.value = true
-        posts.value = response
-        pagination.value.pageTotal = response.total
-      })
-    }
-
-    const pageChangeHandler = () => {
       queryCategory.value = ''
       queryTag.value = ''
       const { tag, category } = route.query
 
-      if (category) {
-        queryCategory.value = category
-      } else if (tag) {
-        queryTag.value = tag
+      queryCategory.value = category
+      queryTag.value = tag
+
+      if (isEmpty(queryTag.value) && isEmpty(queryCategory.value)) {
+        tagStore.fetchAllTags().then(response => {
+          if (response.length > 0) {
+            queryTag.value = response[0].slug;
+            currentOption.value = queryTag.value
+            fetchPostByTag(page);
+            scrollToTop();
+          }
+        })
+      } else if (!isEmpty(queryTag.value) && !isEmpty(queryCategory.value)) {
+        queryCategory.value = ''
+        currentOption.value = queryTag.value
+        fetchPostByTag(page);
+        scrollToTop();
+      } else if (!isEmpty(queryTag.value)) {
+        currentOption.value = queryTag.value
+        fetchPostByTag(page);
+        scrollToTop();
+        return;
+      } else if (!isEmpty(queryCategory.value)) {
+        currentOption.value = queryCategory.value
+        fetchPostByCategory(page);
+        scrollToTop();
       }
 
-      if (tag || category) {
-        initPage()
+    }
+
+    const scrollToTop = () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+
+      metaStore.setTitle('search');
+    }
+
+    const fetchPostByTag = (page: number) => {
+      isFetched.value = false
+      postStore.fetchPostsByTag(queryTag.value, page, pagination.value.pageSize).then(response => {
+        isFetched.value = true
+        posts.value = response
+        pagination.value.pageTotal = response.total
+      })
+    }
+
+    const fetchPostByCategory = (page: number) => {
+      isFetched.value = false
+      postStore.fetchPostsByCategory(queryCategory.value, page, pagination.value.pageSize).then(response => {
+        isFetched.value = true
+        posts.value = response
+        pagination.value.pageTotal = response.total
+      })
+    }
+
+    const pageChangeHandler = (page: number) => {
+      if (currentOption.value === queryTag.value || currentOption.value === queryCategory.value) {
+        if (page === pagination.value.page) {
+          return
+        } else {
+          pagination.value.page = page
+          initPage(page)
+        }
+      } else {
+        pagination.value.page = page
+        initPage(page)
       }
+      
     }
 
     watch(
       () => route.query,
       () => {
-        pageChangeHandler()
+        pagination.value.page = 1;
+        initPage()
       }
     )
 
     onBeforeMount(() => {
-      pageChangeHandler()
+      initPage()
     })
 
     onUnmounted(() => {
