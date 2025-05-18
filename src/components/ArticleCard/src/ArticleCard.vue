@@ -34,7 +34,7 @@
           </b>
           <b
             v-if="post.categories && post.categories.length > 0"
-            @click="navigateToCategory(post.categories[0].slug)"
+            @click.stop="navigateToCategory(post.categories[0].slug)"
           >
             {{ post.categories[0].name }}
           </b>
@@ -49,7 +49,7 @@
             <li
               v-for="tag in post.min_tags"
               :key="tag.slug"
-              @click="navigateToTag(tag.slug)"
+              @click.stop="navigateToTag(tag.slug)"
             >
               <em># </em><span>{{ tag.name }}</span>
             </li>
