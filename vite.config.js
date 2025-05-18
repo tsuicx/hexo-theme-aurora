@@ -18,6 +18,14 @@ export default ({ mode }) => {
       : 'templates/index.html'
 
   return defineConfig({
+    css: {
+      preprocessorOptions: {
+        scss: {
+          api: 'modern-compiler',
+          silenceDeprecations: ['legacy-js-api']
+        }
+      }
+    },
     build: {
       outDir: 'source',
       assetsDir: 'static',
