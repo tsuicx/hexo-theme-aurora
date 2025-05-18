@@ -76,6 +76,7 @@ export default defineComponent({
   left: 50%;
   transform: translateX(-50%);
   transition: top 300ms ease-in-out;
+  color: var(--text-accent);
   &.open {
     top: 1.5rem;
   }
