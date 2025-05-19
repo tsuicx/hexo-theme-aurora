@@ -1,5 +1,5 @@
 import { fetchAllCategories } from '@/api'
-import { Categories } from '@/models/Post.class'
+import { Categories, Category } from '@/models/Post.class'
 import { defineStore } from 'pinia'
 
 export const useCategoryStore = defineStore({
@@ -12,7 +12,7 @@ export const useCategoryStore = defineStore({
   }),
   getters: {},
   actions: {
-    async fetchCategories() {
+    async fetchCategories(): Promise<Category[]> {
       this.isLoaded = false
       const { data } = await fetchAllCategories()
       return new Promise(resolve => {

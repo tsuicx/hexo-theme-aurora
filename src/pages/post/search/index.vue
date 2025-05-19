@@ -70,6 +70,7 @@ import Paginator from '@/components/Paginator.vue'
 import { ArticleCard } from '@/components/ArticleCard'
 import { SpecificPostsList } from '@/models/Post.class'
 import { useRoute } from 'vue-router'
+import { useCategoryStore } from '@/stores/category'
 import { useTagStore } from '@/stores/tag'
 import { usePostStore } from '@/stores/post'
 import { useMetaStore } from '@/stores/meta'
@@ -90,6 +91,7 @@ export default defineComponent({
     const { t } = useI18n()
     const route = useRoute()
     const tagStore = useTagStore()
+    const categoryStore = useCategoryStore()
     const postStore = usePostStore()
     const metaStore = useMetaStore()
     const pageType = ref('search')
@@ -108,39 +110,102 @@ export default defineComponent({
     const currentOption = ref('');
 
     const initPage = (page: number = 1) => {
-
-      queryCategory.value = ''
-      queryTag.value = ''
       const { tag, category } = route.query
-
       queryCategory.value = category
       queryTag.value = tag
 
-      if (isEmpty(queryTag.value) && isEmpty(queryCategory.value)) {
-        tagStore.fetchAllTags().then(response => {
+      if (route.query && Object.keys(route.query).length > 0) {
+        const queryKeys = Object.keys(route.query);
+
+        if (queryKeys.length === 2) {
+          if (!queryKeys.includes('tag') && !queryKeys.includes('category')) {
+            categoryStore.fetchCategories().then(response => {
+              if (response.length > 0) {
+                queryCategory.value = response[0].slug;
+                currentOption.value = queryCategory.value
+                fetchPostByCategory(page);
+                scrollToTop();
+              }
+            });
+            return;
+          }
+
+          if (queryKeys[0] === 'tag') {
+            queryCategory.value = '';
+            if (!isEmpty(queryTag.value)) {
+              currentOption.value = queryTag.value;
+              fetchPostByTag(page);
+              scrollToTop();
+            } else {
+              tagStore.fetchAllTags().then(response => {
+                if (response.length > 0) {
+                  queryTag.value = response[0].slug;
+                  currentOption.value = queryTag.value
+                  fetchPostByTag(page);
+                  scrollToTop();
+                }
+              });
+            }
+          } else if (queryKeys[0] === 'category') {
+            queryTag.value = '';
+            if (!isEmpty(queryCategory.value)) {
+              currentOption.value = queryCategory.value
+              fetchPostByCategory(page);
+              scrollToTop();
+            } else {
+              categoryStore.fetchCategories().then(response => {
+                if (response.length > 0) {
+                  queryCategory.value = response[0].slug;
+                  currentOption.value = queryCategory.value
+                  fetchPostByCategory(page);
+                  scrollToTop();
+                }
+              })
+            }
+          }
+        } else if (queryKeys.length === 1) {
+          if (queryTag.value === undefined) {
+            if (!isEmpty(queryCategory.value)) {
+              currentOption.value = queryCategory.value
+              fetchPostByCategory(page);
+              scrollToTop();
+            } else {
+              categoryStore.fetchCategories().then(response => {
+                if (response.length > 0) {
+                  queryCategory.value = response[0].slug;
+                  currentOption.value = queryCategory.value
+                  fetchPostByCategory(page);
+                  scrollToTop();
+                }
+              })
+            }
+          } else if (queryCategory.value === undefined) {
+            if (!isEmpty(queryTag.value)) {
+              currentOption.value = queryTag.value
+              fetchPostByTag(page);
+              scrollToTop();
+            } else {
+              tagStore.fetchAllTags().then(response => {
+                if (response.length > 0) {
+                  queryTag.value = response[0].slug;
+                  currentOption.value = queryTag.value
+                  fetchPostByTag(page);
+                  scrollToTop();
+                }
+              })
+            }
+          }
+        }
+      } else {
+        categoryStore.fetchCategories().then(response => {
           if (response.length > 0) {
-            queryTag.value = response[0].slug;
-            currentOption.value = queryTag.value
-            fetchPostByTag(page);
+            queryCategory.value = response[0].slug;
+            currentOption.value = queryCategory.value
+            fetchPostByCategory(page);
             scrollToTop();
           }
         })
-      } else if (!isEmpty(queryTag.value) && !isEmpty(queryCategory.value)) {
-        queryCategory.value = ''
-        currentOption.value = queryTag.value
-        fetchPostByTag(page);
-        scrollToTop();
-      } else if (!isEmpty(queryTag.value)) {
-        currentOption.value = queryTag.value
-        fetchPostByTag(page);
-        scrollToTop();
-        return;
-      } else if (!isEmpty(queryCategory.value)) {
-        currentOption.value = queryCategory.value
-        fetchPostByCategory(page);
-        scrollToTop();
       }
-
     }
 
     const scrollToTop = () => {
