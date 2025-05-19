@@ -224,15 +224,15 @@
                 fill="currentColor"
                 fill-rule="evenodd"
               ></path>
-            </svg> -->
+              </svg> -->
               <img
                 class="mr-1.5"
-                src="https://res.cloudinary.com/tridiamond/image/upload/v1625037705/ObsidianestLogo-hex_hecqbw.png"
+                src="https://wyrccx99-1256927367.cos.ap-shanghai.myqcloud.com/%E5%9B%BE%E5%BA%93/avatar-circle.png"
                 alt="ObsidianNext Logo"
                 height="20"
                 width="20"
               />
-              <span class="text-ob">Aurora</span>
+              <span class="text-ob">TsuiCX</span>
             </a>
           </div>
           <ul class="search-commands">

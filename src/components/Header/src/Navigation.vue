@@ -1,38 +1,26 @@
 <template>
-  <nav class="items-center flex-1 hidden lg:flex">
+  <nav class="items-center flex-1 hidden lg:flex justify-center">
     <ul class="flex flex-row items-center list-none px-6 text-white">
       <li
         class="not-italic font-medium text-xs h-full relative flex flex-col items-center justify-center cursor-pointer text-center py-2 px-2"
-        v-for="route in routes"
-        :key="route.path"
-      >
-        <div
-          class="nav-link text-sm block px-1.5 py-0.5 rounded-md relative uppercase cursor-pointer"
-          @click="pushPage(route.path)"
-          v-if="route.children && route.children.length === 0"
-          :data-menu="route.name"
-        >
+        v-for="route in routes" :key="route.path">
+
+        <div class="nav-link text-sm block px-1.5 py-0.5 rounded-md relative uppercase cursor-pointer"
+          @click="pushPage(route.path)" v-if="route.children && route.children.length === 0" :data-menu="route.name">
           <span class="relative z-50" v-if="locale">
             {{ route.i18n[locale] }}
           </span>
           <span class="relative z-50" v-else>{{ route.name }}</span>
         </div>
-        <Dropdown
-          @command="pushPage"
-          hover
-          v-else
-          class="nav-link text-sm block px-1.5 py-0.5 rounded-md relative uppercase"
-        >
+        
+        <Dropdown @command="pushPage" hover v-else
+          class="nav-link text-sm block px-1.5 py-0.5 rounded-md relative uppercase">
           <span class="relative z-50" v-if="locale">
             {{ route.i18n[locale] }}
           </span>
           <span class="relative z-50" v-else>{{ route.name }}</span>
           <DropdownMenu>
-            <DropdownItem
-              v-for="sub in route.children"
-              :key="sub.path"
-              :name="sub.path"
-            >
+            <DropdownItem v-for="sub in route.children" :key="sub.path" :name="sub.path">
               <span class="relative z-50" v-if="locale">
                 {{ sub.i18n[locale] }}
               </span>
@@ -66,10 +54,27 @@ export default defineComponent({
       if (isExternal(path)) {
         window.location.href = path
       } else {
+        const query = getUrlQueryParams(path);
         router.push({
-          path: path
+          path: path,
+          query: {
+            ...query
+          }
         })
       }
+    }
+
+    const getUrlQueryParams = (url: string): Record<string, string> => {
+      const params: Record<string, string> = {};
+      const reg = /([^&?]*)=([^&]*)/g;
+      const res = url.match(reg);
+      if (res) {
+        for (const key in res) {
+          const query = res[key].split('=');
+          params[query[0]] = query[1];
+        }
+      }
+      return params;
     }
 
     return {

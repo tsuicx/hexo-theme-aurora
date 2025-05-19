@@ -92,15 +92,6 @@ export class ThemeMenu implements ObMenu {
    */
   constructor(raw?: GeneralOptions) {
     const extract: GeneralOptions = {
-      About: {
-        name: 'About',
-        path: '/about',
-        i18n: {
-          'zh-CN': '关于',
-          'zh-TW': '關於',
-          en: 'About'
-        }
-      },
       Archives: {
         name: 'Archives',
         path: '/archives',
@@ -110,24 +101,42 @@ export class ThemeMenu implements ObMenu {
           en: 'Archives'
         }
       },
+      Categories: {
+        name: 'Categories',
+        path: '/post/search?category=',
+        i18n: {
+          'zh-CN': '分类',
+          'zh-TW': '分類',
+          en: 'Categories'
+        }
+      },
       Tags: {
         name: 'Tags',
-        path: '/tags',
+        path: '/post/search?tag=',
         i18n: {
           'zh-CN': '标签',
           'zh-TW': '標簽',
           en: 'Tags'
         }
       },
+      About: {
+        name: 'About',
+        path: '/about',
+        i18n: {
+          'zh-CN': '关于',
+          'zh-TW': '關於',
+          en: 'About'
+        }
+      },
       Links: {
         name: 'Links',
         path: '/links',
         i18n: {
-          'zh-CN': '友情链接',
-          'zh-TW': '友情鏈接',
+          'zh-CN': '友链',
+          'zh-TW': '友鏈',
           en: 'Friend Links'
         }
-      }
+      },
     }
 
     const defaultMenus = Object.keys(extract)
@@ -249,10 +258,10 @@ export class Theme implements ObTheme {
     color_3: '#ff0099'
   }
   header_gradient_css =
-    'linear-gradient(130deg, #24c6dc, #5433ff 41.07%, #ff0099 76.05%)'
+    'linear-gradient(130deg, #2980b9, #6dd5fa 41.07%, #ffc090 76.05%)'
   background_gradient_style = {
     background:
-      'linear-gradient(130deg, #24c6dc, #5433ff 41.07%, #ff0099 76.05%)',
+      'linear-gradient(130deg, #2980b9, #6dd5fa 41.07%, #ffc090 76.05%)',
     '-webkit-background-clip': 'text',
     '-webkit-text-fill-color': 'transparent',
     '-webkit-box-decoration-break': 'clone',
