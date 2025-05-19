@@ -13,7 +13,7 @@
               <b class="font-extrabold">{{ themeConfig.site.author }}</b>
               . All Rights Reserved.
             </li>
-            <li>
+            <!-- <li>
               Powered by
               <a href="https://hexo.io/">
                 <b class="font-extrabold border-b-2 border-ob hover:text-ob">
@@ -26,7 +26,7 @@
                   Aurora v{{ themeConfig.version }}
                 </b>
               </a>
-            </li>
+            </li> -->
             <li
               v-if="
                 themeConfig.site.beian.number !== '' ||
@@ -58,7 +58,7 @@
             </li>
           </ul>
           <ul class="flex flex-col flex-1 gap-1.5">
-            <li
+            <!-- <li
               class="flex flex-row max-w-[11rem]"
               v-if="enabledPlugin === 'waline'"
             >
@@ -73,7 +73,7 @@
               <span class="flex-1 text-right">
                 <span class="waline-pageview-count" data-path="/" />
               </span>
-            </li>
+            </li> -->
 
             <li
               class="flex flex-row max-w-[11rem]"
