@@ -51,18 +51,18 @@
               <span class="text-ob-bright">{{ authorData.word_count }}</span>
               <p class="text-xs">{{ t('settings.words') }}</p>
             </li>
-            <li class="col-span-1 text-center">
+            <li class="col-span-1 text-center hover:opacity-60 cursor-pointer" @click="handleArticlesClick">
               <span class="text-ob-bright">
                 {{ authorData.post_list.length }}
               </span>
               <p class="text-xs">{{ t('settings.articles') }}</p>
             </li>
-            <li class="col-span-1 text-center">
+            <li class="col-span-1 text-center hover:opacity-60 cursor-pointer" @click="handleCategoryClick">
               <span class="text-ob-bright">{{ authorData.categories }}</span>
               <p class="text-xs">{{ t('settings.categories') }}</p>
             </li>
-            <li class="col-span-1 text-center">
-              <span class="text-ob-bright">{{ authorData.tags }}</span>
+            <li class="col-span-1 text-center hover:opacity-60 cursor-pointer" @click="handleTagClick">
+              <span class="text-ob-bright">{{ tags.length }}</span>
               <p class="text-xs">{{ t('settings.tags') }}</p>
             </li>
           </ul>
@@ -76,8 +76,10 @@
 import { AuthorPosts } from '@/models/Post.class'
 import { useAppStore } from '@/stores/app'
 import { useAuthorStore } from '@/stores/author'
+import { useTagStore } from "@/stores/tag";
 import { computed, defineComponent, onMounted, ref, toRefs, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useRouter } from 'vue-router'
 import Social from '@/components/Social.vue'
 
 export default defineComponent({
@@ -92,10 +94,11 @@ export default defineComponent({
     }
   },
   setup(props) {
+    const tagStore = useTagStore()
     const appStore = useAppStore()
     const authorStore = useAuthorStore()
     const { t } = useI18n()
-
+    const router = useRouter()
     const author = toRefs(props).author
     const authorData = ref(new AuthorPosts())
 
@@ -111,6 +114,20 @@ export default defineComponent({
       })
     }
 
+    const handleArticlesClick = () => {
+      router.push({
+        name: 'archives',
+      })
+    }
+
+    const handleTagClick = () => {
+      router.push({ name: 'post-search', query: { tag: '' } })
+    }
+
+    const handleCategoryClick = () => {
+      router.push({ name: 'post-search', query: { category: '' } })
+    }
+
     watch(
       () => props.author,
       (newAuthor, oldAuthor) => {
@@ -123,6 +140,10 @@ export default defineComponent({
     onMounted(fetchData)
 
     return {
+      tags: computed(() => {
+        if (tagStore.isLoaded && tagStore.tags.length === 0) return []
+        return tagStore.tags
+      }),
       avatarClass: computed(() => {
         return {
           'ob-avatar': true,
@@ -138,6 +159,9 @@ export default defineComponent({
       }),
       statistic: computed(() => appStore.statistic),
       authorData,
+      handleArticlesClick,
+      handleTagClick,
+      handleCategoryClick,
       t
     }
   }
