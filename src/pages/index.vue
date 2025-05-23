@@ -196,10 +196,18 @@ export default defineComponent({
     }
 
     const backToArticleTop = () => {
-      window.scrollTo({
+      if (appStore.themeConfig.theme.feature) {
+        window.scrollTo({
         top: articleOffset.value,
         behavior: 'smooth'
       })
+      } else {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        })
+      } 
+      
     }
 
     const activeTabStyle = (slug: string) => {
