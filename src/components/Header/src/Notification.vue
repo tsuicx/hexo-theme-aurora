@@ -6,7 +6,7 @@
       <div class="flex items-center space-x-4 px-6">
         <SvgIcon
           icon-class="bell"
-          stroke="var(--text-normal)"
+          stroke="var(--text-accent)"
           fill="none"
           width="1.4rem"
           height="1.4rem"
@@ -79,6 +79,10 @@ export default defineComponent({
   color: var(--text-accent);
   &.open {
     top: 1.5rem;
+  }
+
+  span {
+    font-weight: 800;
   }
 }
 .progress-bar {
