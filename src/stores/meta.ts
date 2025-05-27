@@ -36,7 +36,7 @@ export const useMetaStore = defineStore({
       const appStore = useAppStore()
       const route = useRoute()
       let subtitle = appStore.themeConfig.site.subtitle || 'Blog'
-      if (!route || route.name && route.name === 'home') {
+      if (route && route.name && route.name === 'home') {
         subtitle = appStore.themeConfig.site.slogan
       }
       if (this.title === '') return subtitle

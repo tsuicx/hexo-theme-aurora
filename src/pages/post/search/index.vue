@@ -108,6 +108,7 @@ export default defineComponent({
     const queryTag = ref()
     const queryCategory = ref()
     const currentOption = ref('');
+    const whichType = ref('category');
 
     const initPage = (page: number = 1) => {
       const { tag, category } = route.query
@@ -131,6 +132,7 @@ export default defineComponent({
           }
 
           if (queryKeys[0] === 'tag') {
+            whichType.value = 'tag';
             queryCategory.value = '';
             if (!isEmpty(queryTag.value)) {
               currentOption.value = queryTag.value;
@@ -180,6 +182,7 @@ export default defineComponent({
               })
             }
           } else if (queryCategory.value === undefined) {
+            whichType.value = 'tag';
             if (!isEmpty(queryTag.value)) {
               currentOption.value = queryTag.value
               fetchPostByTag(page);
@@ -214,7 +217,8 @@ export default defineComponent({
         behavior: 'smooth'
       });
 
-      metaStore.setTitle('search');
+      const title = whichType.value === 'tag' ? '标签' : '分类';
+      metaStore.setTitle(title);
     }
 
     const fetchPostByTag = (page: number) => {
