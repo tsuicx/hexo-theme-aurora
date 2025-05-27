@@ -135,7 +135,7 @@ export default defineComponent({
     const categoryStore = useCategoryStore()
     const { updateTitleByText } = usePageTitle()
     const { t } = useI18n()
-    const DEFAULT_PAGE_SIZE = 12
+    const DEFAULT_PAGE_SIZE = appStore.themeConfig.theme.feature ? 12 : 13
 
     /** Variables Section */
 
@@ -161,10 +161,12 @@ export default defineComponent({
     /** Function section */
 
     const fetchData = async () => {
-      await postStore.fetchFeaturePosts().then(() => {
-        topFeature.value = postStore.featurePosts.top_feature
-        featurePosts.value = postStore.featurePosts.features
-      })
+      if (appStore.themeConfig.theme.feature) {
+        await postStore.fetchFeaturePosts().then(() => {
+          topFeature.value = postStore.featurePosts.top_feature
+          featurePosts.value = postStore.featurePosts.features
+        })
+      }
 
       await fetchPostData()
       await categoryStore.fetchCategories()
