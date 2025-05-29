@@ -98,7 +98,7 @@ export default ({ mode }) => {
           target: 'http://localhost:4000/assets',
           changeOrigin: true,
           rewrite: path => path.replace(/^\/assets/, '')
-        }
+        },
       }
     }
   })
