@@ -31,7 +31,7 @@ export default defineComponent({
 
     const toggleStyle = reactive({
       transform: '',
-      background: '#6e40c9'
+      background: ''
     })
     let toggleStatus = status.value
 
@@ -44,7 +44,7 @@ export default defineComponent({
     const changeTransform = () => {
       const transform = toggleStatus ? '18px' : '0'
       toggleStyle.transform = `translateX(${transform})`
-      const backgroundColor = toggleStatus ? '#6e40c9' : '#100E16'
+      const backgroundColor = toggleStatus ? '#6e40c9' : 'white'
       toggleStyle.background = backgroundColor
     }
 
@@ -72,7 +72,7 @@ export default defineComponent({
   left: -6px;
   width: 28px;
   height: 28px;
-  background-color: #6e40c9;
+  background-color: white;
   border-radius: 50%;
   transition: all 250ms cubic-bezier(0.4, 0.03, 0, 1) 0s;
   @apply absolute shadow-lg;

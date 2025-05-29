@@ -22,6 +22,7 @@
         v-if="enableMultiLanguage"
         @command="handleClick"
         :value="currentLocale"
+        hover
       >
         <span
           class="icon-control flex items-center text-invert"
@@ -211,12 +212,6 @@ export default defineComponent({
   }
   .icon-control {
     span {
-      @apply -mr-10 opacity-0 w-10 pointer-events-none;
-      transition: 0.3s all ease;
-    }
-
-    &:hover span,
-    &:active span {
       @apply mr-0 opacity-100 pointer-events-auto;
     }
   }
@@ -226,10 +221,8 @@ export default defineComponent({
     cursor: pointer;
     transition: opacity 250ms ease;
     padding-right: 0.5rem;
-    &[no-hover-effect] {
-      &:hover {
-        opacity: 1;
-      }
+    &:hover {
+      opacity: 0.8;
     }
     .svg-icon {
       margin-right: 0.5rem;
