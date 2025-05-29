@@ -38,7 +38,7 @@ import { useTagStore } from '@/stores/tag'
 import { TagList, TagItem } from '@/components/Tag'
 import { useCommonStore } from '@/stores/common'
 import SvgIcon from '@/components/SvgIcon/index.vue'
-import defaultCover from '@/assets/default-cover.jpg'
+import defaultCover from '@/assets/default-cover.webp'
 import usePageTitle from '@/hooks/usePageTitle'
 
 export default defineComponent({

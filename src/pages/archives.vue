@@ -64,7 +64,7 @@ import { useI18n } from 'vue-i18n'
 import Breadcrumbs from '@/components/Breadcrumbs.vue'
 import Paginator from '@/components/Paginator.vue'
 import { useCommonStore } from '@/stores/common'
-import defaultCover from '@/assets/default-cover.jpg'
+import defaultCover from '@/assets/default-cover.webp'
 import usePageTitle from '@/hooks/usePageTitle'
 
 export default defineComponent({
