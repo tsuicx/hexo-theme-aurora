@@ -134,6 +134,8 @@ export function filterHTMLContent(content: string, length?: number): string {
 }
 
 export function getDaysTillNow(from: string) {
+  // Convert the date string to a format that can be parsed by Date
+  from = from.replace(/-/g, '/')
   const today = new Date()
   const fromDate = new Date(from)
 
