@@ -14,7 +14,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, reactive, toRefs } from 'vue'
+import { defineComponent, onMounted, reactive, watch } from 'vue'
 
 export default defineComponent({
   name: 'ObToggle',
@@ -23,7 +23,7 @@ export default defineComponent({
   },
   emits: ['changeStatus'],
   setup(props, { emit }) {
-    const { status } = toRefs(props)
+    const { status } = props
 
     onMounted(() => {
       changeTransform()
@@ -33,7 +33,7 @@ export default defineComponent({
       transform: '',
       background: ''
     })
-    let toggleStatus = status.value
+    let toggleStatus = status
 
     const changeStatus = () => {
       toggleStatus = !toggleStatus
@@ -47,6 +47,11 @@ export default defineComponent({
       const backgroundColor = toggleStatus ? '#6e40c9' : 'white'
       toggleStyle.background = backgroundColor
     }
+
+    watch(() => props.status, (newStatus) => {
+      toggleStatus = newStatus
+      changeTransform()
+    })
 
     return {
       toggleStyle,
