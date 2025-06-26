@@ -53,7 +53,7 @@ export default defineComponent({
       state.svgStyle.viewBox = newTheme === 'theme-dark' ? '0 0 1024 1024' : '0 0 36 36'
       state.svgStyle.d = newTheme === 'theme-dark' ? moon : sun
 
-      console.log('Theme changed to:', newTheme, 'isDark:', state.isDark, 'svgStyle:', state.svgStyle);
+      // console.log('Theme changed to:', newTheme, 'isDark:', state.isDark, 'svgStyle:', state.svgStyle);
     })
 
     return {

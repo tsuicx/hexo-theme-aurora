@@ -110,12 +110,19 @@ export function formatTime(
 export function filterHTMLContent(content: string, length?: number): string {
   if (!length) length = 28
 
+  const imgRegex = /<img[^>]*>/gi;
+  const classRegex = /class="[^"]*wl-emoji[^"]*"/i
+  const imgTags = content.match(imgRegex) || [];
+
+  imgTags.forEach(tag => {    
+    if (classRegex.test(tag)) {
+      content = content.replace(tag, '[Emoji]')
+    } else {
+      content = content.replace(tag, '[Sticker]')
+    }
+  })
+
   content = content
-    // Replace all images
-    .replace(
-      /![\s\w\](?:http(s)?://)+[\w.-]+(?:.[\w.-]+)+[\w\-._~:/?#[\]@!$&'*+,;=.]+\)/g,
-      '[img]'
-    )
     // Replacing all links.
     .replace(
       /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)+/g,
